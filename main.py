@@ -66,28 +66,34 @@ def aht10_data(data):
 
 
 def main():
+    print("Iniciando monitoramento!\n")
+
     try:
         with open(SD_CARD + DATALOGGER, "x") as f:
             f.write("data_hora,umidade_percentual,temperatura_celsius\n")
 
     except FileExistsError:
-        print("Arquivo já existe. Novos dados serão acrescidos ao final do arquivo.")
+        print("Arquivo já existe. Novos dados serão acrescidos ao final do arquivo.\n")
 
     aht10_init()
+
+    print("data_hora,umidade_percentual,temperatura_celsius")
 
     try:
         while True:
             timestamp = datetime.now()
             aht10_measure()
             hum, temp = aht10_data(aht10_read())
-            print(f"{timestamp},{hum:.2f},{temp:.2f}\n")
+
+            print(f"{timestamp},{hum:.2f},{temp:.2f}")
+
             with open(SD_CARD + DATALOGGER, "a") as f:
                 f.write(f"{timestamp},{hum:.2f},{temp:.2f}\n")
 
     except KeyboardInterrupt:
         i2c_2.close()
         # i2c_3.close()
-        print("\nFim da execução!")
+        print("\nFinalizando monitoramento!\n")
 
 
 if __name__ == "__main__":
