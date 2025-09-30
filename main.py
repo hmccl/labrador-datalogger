@@ -2,8 +2,9 @@ import time
 from datetime import datetime
 from periphery import I2C
 
-# Datalogger file
-DATALOGGER = "./logger.txt"
+# Path
+SD_CARD = "/media/caninos/adata64"
+DATALOGGER = "/datalogger/data.txt"
 
 # AHT10 config
 I2C_2_BUS = "/dev/i2c-2"
@@ -73,7 +74,7 @@ def main():
             aht10_measure()
             hum, temp = aht10_data(aht10_read())
             print(f"{timestamp} --- Umid: {hum:.2f}% | Temp: {temp:.2f}°C")
-            with open(DATALOGGER, "a") as f:
+            with open(SD_CARD + DATALOGGER, "a") as f:
                 f.write(f"{timestamp} --- Umid: {hum:.2f}% | Temp: {temp:.2f}°C\n")
 
     except KeyboardInterrupt:
