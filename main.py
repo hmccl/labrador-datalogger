@@ -2,6 +2,9 @@ import time
 from datetime import datetime
 from periphery import I2C
 
+# Interval
+INTERVAL_SEC = 1
+
 # Path
 SD_CARD = "/media/caninos/adata64"
 DATALOGGER = "/data.txt"
@@ -34,7 +37,7 @@ def aht10_measure():
 
     measure_command = [0xAC, 0x33, 0x00]
     i2c_2.transfer(I2C_2_ADDRESS, [I2C.Message(measure_command)])
-    time.sleep(1)
+    time.sleep(0.5)
 
 
 def aht10_read():
@@ -89,6 +92,8 @@ def main():
 
             with open(SD_CARD + DATALOGGER, "a") as f:
                 f.write(f"{timestamp},{hum:.2f},{temp:.2f}\n")
+
+            time.sleep(INTERVAL_SEC)
 
     except KeyboardInterrupt:
         i2c_2.close()
