@@ -4,7 +4,7 @@ from periphery import I2C
 
 # Path
 SD_CARD = "/media/caninos/adata64"
-DATALOGGER = "/datalogger/data.txt"
+DATALOGGER = "/data.txt"
 
 # AHT10 config
 I2C_2_BUS = "/dev/i2c-2"
@@ -66,6 +66,13 @@ def aht10_data(data):
 
 
 def main():
+    try:
+        with open(SD_CARD + DATALOGGER, "x") as f:
+            f.write("data_hora,umidade_percentual,temperatura_celsius\n")
+
+    except FileExistsError:
+        print("Arquivo já existe. Novos dados serão acrescidos ao final do arquivo.")
+
     aht10_init()
 
     try:
@@ -73,9 +80,9 @@ def main():
             timestamp = datetime.now()
             aht10_measure()
             hum, temp = aht10_data(aht10_read())
-            print(f"{timestamp} --- Umid: {hum:.2f}% | Temp: {temp:.2f}°C")
+            print(f"{timestamp},{hum:.2f},{temp:.2f}\n")
             with open(SD_CARD + DATALOGGER, "a") as f:
-                f.write(f"{timestamp} --- Umid: {hum:.2f}% | Temp: {temp:.2f}°C\n")
+                f.write(f"{timestamp},{hum:.2f},{temp:.2f}\n")
 
     except KeyboardInterrupt:
         i2c_2.close()
