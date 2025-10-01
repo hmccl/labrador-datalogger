@@ -26,6 +26,7 @@ O projeto implementa um datalogger na SBC Labrador 32.
 
    ```bash
    lsblk
+   sudo mount -m /dev/mmcblk0p1 /media/caninos/adata64
    ```
 
 1. Altere os valores das variáveis se necessário.
