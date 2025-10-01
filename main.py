@@ -15,9 +15,9 @@ I2C_2_ADDRESS = 0x38
 i2c_2 = I2C(I2C_2_BUS)
 
 # BH1750 config
-# I2C_3_BUS = "/dev/i2c-3"
-# I2C_3_ADDRESS = 0x38 ??
-# i2c_3 = I2C(I2C_3_BUS)
+I2C_3_BUS = "/dev/i2c-3"
+I2C_3_ADDRESS = 0x23
+i2c_3 = I2C(I2C_3_BUS)
 
 
 def aht10_init():
@@ -57,7 +57,7 @@ def aht10_data(data):
     Receives 6 bytes of data.
     Humidity: bytes 1, 2, 3 (half).
     Temperature: bytes 3 (half), 4, 5.
-    Returns humidity (percentage) and temperature (degree Celsius)
+    Returns humidity (percentage) and temperature (degree Celsius).
     """
 
     humidity = ((data[1] << 12) | (data[2] << 4) | (data[3] >> 4)) * 100 / (1 << 20)
@@ -68,36 +68,85 @@ def aht10_data(data):
     return humidity, temperature
 
 
+def bh1750_init():
+    """
+    BH1750 sensor init.
+    """
+
+    init_command = [0x01]
+    i2c_3.transfer(I2C_3_ADDRESS, [I2C.Message(init_command)])
+    time.sleep(0.5)
+
+
+def bh1750_measure():
+    """
+    BH1750 sensor measure.
+    """
+
+    measure_command = [0x10]
+    i2c_3.transfer(I2C_3_ADDRESS, [I2C.Message(measure_command)])
+    time.sleep(0.5)
+
+
+def bh1750_read():
+    """
+    BH1750 sensor read.
+    Returns 2 bytes os data.
+    """
+
+    read_command = I2C.Message([0x00, 0x00], read=True)
+    i2c_3.transfer(I2C_3_ADDRESS, [read_command])
+
+    return read_command.data
+
+
+def bh1750_data(data):
+    """
+    Receives 2 bytes of data.
+    Ambient Light: bytes 0, 1.
+    Returns ambient light (lux).
+    """
+
+    lux = ((data[0] << 8) | data[1]) / 1.2
+
+    return lux
+
+
 def main():
     print("Iniciando monitoramento!\n")
 
     try:
         with open(SD_CARD + DATALOGGER, "x") as f:
-            f.write("data_hora,umidade_percentual,temperatura_celsius\n")
+            f.write(
+                "data_hora,umidade_percentual,temperatura_celsius,luminosidade_lux\n"
+            )
 
     except FileExistsError:
         print("Arquivo já existe. Novos dados serão acrescidos ao final do arquivo.\n")
 
     aht10_init()
+    bh1750_init()
 
-    print("data_hora,umidade_percentual,temperatura_celsius")
+    print("data_hora,umidade_percentual,temperatura_celsius,luminosidade_lux")
 
     try:
         while True:
             timestamp = datetime.now()
             aht10_measure()
             hum, temp = aht10_data(aht10_read())
+            bh1750_measure()
+            lux = bh1750_data(bh1750_read())
 
-            print(f"{timestamp},{hum:.2f},{temp:.2f}")
+            print(f"{timestamp},{hum:.2f},{temp:.2f},{lux:.2f}")
 
             with open(SD_CARD + DATALOGGER, "a") as f:
-                f.write(f"{timestamp},{hum:.2f},{temp:.2f}\n")
+                f.write(f"{timestamp},{hum:.2f},{temp:.2f},{lux:.2f}\n")
 
             time.sleep(INTERVAL_SEC)
 
     except KeyboardInterrupt:
         i2c_2.close()
-        # i2c_3.close()
+        i2c_3.close()
         print("\nFinalizando monitoramento!\n")
 
 
