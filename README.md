@@ -2,6 +2,28 @@
 
 O projeto implementa um datalogger na SBC Labrador 32.
 
+## Conexão
+
+A seguir descreve-se as conexões dos sensores com a Labrador.
+
+### AHT10
+
+ Sensor AHT10     Interface Serial Labrador
+-------------- --------------------------------
+     VDD               Pino 01 (3.3 V)
+     GND                Pino 06 (GND)
+     SDA        Pino 03 (GPIO-E03, I2C2_SDATA)
+     SCL        Pino 05 (GPIO-E02, I2C2_SCLK)
+
+### BH1750
+
+ Sensor BH1750     Interface Serial Labrador
+--------------- --------------------------------
+      VDD               Pino 17 (3.3 V)
+      GND                Pino 25 (GND)
+      SDA        Pino 19 (GPIO-C25, I2C3_SDATA)
+      SCL        Pino 23 (GPIO-C22, I2C3_SCLK)
+
 ## Instruções
 
 1. Crie um ambiente virtual.
@@ -29,9 +51,10 @@ O projeto implementa um datalogger na SBC Labrador 32.
    sudo mount -m /dev/mmcblk0p1 /media/caninos/adata64
    ```
 
-1. Altere os valores das variáveis se necessário.
+1. Altere os valores das variáveis globais se necessário.
 
    ```python
+   INTERVAL_SEC = 1
    SD_CARD = "/media/caninos/adata64"
    DATALOGGER = "/data.txt"
    ```
