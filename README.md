@@ -1,3 +1,4 @@
+
 # Datalogger
 
 O projeto implementa um datalogger na SBC Labrador 32.
@@ -8,21 +9,21 @@ A seguir descreve-se as conexões dos sensores com a Labrador.
 
 ### AHT10
 
- Sensor AHT10     Interface Serial Labrador
--------------- --------------------------------
-     VDD               Pino 01 (3.3 V)
-     GND                Pino 06 (GND)
-     SDA        Pino 03 (GPIO-E03, I2C2_SDATA)
-     SCL        Pino 05 (GPIO-E02, I2C2_SCLK)
+| Sensor AHT10 |   Interface Serial Labrador    |
+|--------------|--------------------------------|
+|     VDD      |        Pino 01 (3.3 V)         |
+|     GND      |         Pino 06 (GND)          |
+|     SDA      | Pino 03 (GPIO-E03, I2C2 SDATA) |
+|     SCL      | Pino 05 (GPIO-E02, I2C2 SCLK)  |
 
 ### BH1750
 
- Sensor BH1750     Interface Serial Labrador
---------------- --------------------------------
-      VDD               Pino 17 (3.3 V)
-      GND                Pino 25 (GND)
-      SDA        Pino 19 (GPIO-C25, I2C3_SDATA)
-      SCL        Pino 23 (GPIO-C22, I2C3_SCLK)
+| Sensor BH1750 |   Interface Serial Labrador    |
+|---------------|--------------------------------|
+|      VDD      |        Pino 17 (3.3 V)         |
+|      GND      |         Pino 25 (GND)          |
+|      SDA      | Pino 19 (GPIO-C25, I2C3 SDATA) |
+|      SCL      | Pino 23 (GPIO-C22, I2C3 SCLK)  |
 
 ## Instruções
 
