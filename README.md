@@ -9,6 +9,8 @@ A seguir descreve-se as conexões dos sensores com a Labrador.
 
 ### AHT10
 
+O AHT10 é um sensor de umidade e temperatura.
+
 | Sensor AHT10 |   Interface Serial Labrador    |
 |--------------|--------------------------------|
 |     VDD      |        Pino 01 (3.3 V)         |
@@ -17,6 +19,9 @@ A seguir descreve-se as conexões dos sensores com a Labrador.
 |     SCL      | Pino 05 (GPIO-E02, I2C2 SCLK)  |
 
 ### BH1750
+
+
+O BH1750 é um sensor de luminosidade.
 
 | Sensor BH1750 |   Interface Serial Labrador    |
 |---------------|--------------------------------|
