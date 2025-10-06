@@ -1,7 +1,8 @@
 
 # Datalogger
 
-O projeto implementa um datalogger na SBC Labrador 32.
+O projeto implementa um datalogger na Labrador 32.
+A umidade, a temperatura e a luminosidade do ambiente são registradas em um arquivo localizado em um cartão de memória.
 
 ## Conexão
 
